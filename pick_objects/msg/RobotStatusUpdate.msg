@@ -1,0 +1,2 @@
+bool robot_at_pickup_pose 
+bool robot_at_dropoff_pose

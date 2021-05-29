@@ -1,0 +1,69 @@
+<launch>
+<!-- TODO: Add nodes here -->
+
+<!-- map_server node -->
+<arg name="map_file" default="$(find my_robot)/maps/small_world.yaml"/>
+<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+<!-- amcl node -->
+<node pkg="amcl" type="amcl" name="amcl" output="screen">
+<!--     <remap from="scan" to="my_robot/laser/scan"/> -->
+    <param name="odom_frame_id" value="odom"/>
+    <param name="odom_model_type" value="diff-corrected"/>
+    <param name="base_frame_id" value="robot_footprint"/>
+    <param name="global_frame_id" value="map"/>
+
+    <!-- optional: define initial pose.
+    Its values should correspont with "world.launch" initial pose-->
+    <param name="initial_pose_x" value="0"/>
+    <param name="initial_pose_y" value="0"/>
+    <param name="initial_pose_a" value="-0.785398"/> <!-- it's 45° in world file -->
+
+    <!-- To increase tolerance  --> 
+    <param name="transform_tolerance" value="2.0"/> 
+
+    <!-- To increase min particles defalut 100 
+        max particles default 5000-->
+    <param name="min_particles" value="100"/>
+    <param name="max_particles" value="500"/> 
+
+    <!-- To reduce robot rotation and motion -->
+    <param name="update_min_a" value="0.2"/>
+    <param name="update_min_d" value="0.2"/> 
+    
+   
+    <!-- laser parameters -->
+    <param name="laser_max_beams" value="250"/> 
+    <param name="laser_max_range" value="3.5"/> 
+    <param name="laser_model_type" value="likelihood_field"/>
+    <param name="laser_likelihood_max_dist" value="2.5"/>
+    <param name="laser_z_hit" value="0.6"/>
+    <param name="laser_z_rand" value="0.4"/>
+    
+    <!-- odom parameters  -->
+    <param name="odom_alpha1" value="0.01"/> <!-- noise in odam's rotation -> by robot's rotation -->
+    <param name="odom_alpha2" value="0.01"/> <!-- noise in odam's rotation -> by robot's translation -->
+    <param name="odom_alpha3" value="0.01"/> <!-- noise in odam's translation -> by robot's rotation -->
+    <param name="odom_alpha4" value="0.01"/> <!-- noise in odam's translation -> by robot's translation -->
+
+    <!-- warning: to set this value helps in robost 
+        settings against change  in costmap resolution!! -->
+    <param name="meter_scoring" value="true"/> <!-- No such param in offical page! -->
+
+</node>
+
+<!-- move_base node -->
+<node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
+    <!-- <remap from="scan" to="my_robot/laser/scan"/> -->
+    <param name="base_global_planner" value="navfn/NavfnROS" />
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+
+    <!-- adding config files -->
+    <rosparam file="$(find my_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find my_robot)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/config/base_local_planner_params.yaml" command="load" />
+</node>
+
+</launch>
