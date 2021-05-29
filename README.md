@@ -11,6 +11,10 @@ cd ..
 catkin_make
 source devel/setup.bash
 ```
+* Make sure to give 'execuite' permission to the script files 
+```
+chmod +x home_service.sh
+```
 * Run 'home_service.sh' shell file 
 ```
 ./src/script/home_service.sh
