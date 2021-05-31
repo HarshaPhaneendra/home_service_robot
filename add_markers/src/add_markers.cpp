@@ -72,8 +72,13 @@ int main( int argc, char** argv )
 
     marker.lifetime = ros::Duration();
 
-    while (ros::ok())
+    bool condition = true;
+
+    ROS_INFO("Waiting for pose info yet !!");
+    ros::Duration(3).sleep();
+    while (condition)
     {
+        
 
         if( robot_status.robot_at_pickup_pose == false &&
          robot_status.robot_at_dropoff_pose == false)
@@ -84,7 +89,7 @@ int main( int argc, char** argv )
             marker.action = visualization_msgs::Marker::ADD;
             marker_pub.publish(marker);
             ROS_INFO("Virtual Marker at Pick_up is being published. "); 
-            std::cout << "marker_pickup_pose_x: " << move_base.x << " marker_pickup_pose_y: " << move_base.y << std::endl;       
+            //std::cout << "marker_pickup_pose_x: " << move_base.x << " marker_pickup_pose_y: " << move_base.y << std::endl;       
         }
         
         if (robot_status.robot_at_pickup_pose == true &&
@@ -103,7 +108,10 @@ int main( int argc, char** argv )
             marker.action = visualization_msgs::Marker::ADD;
             marker_pub.publish(marker);
             ROS_INFO("Virtual Marker is Droped_Off. ");
-            std::cout << "marker_pickup_pose_x: " << move_base.x << " marker_pickup_pose_y: " << move_base.y << std::endl;
+            //std::cout << "marker_pickup_pose_x: " << move_base.x << " marker_pickup_pose_y: " << move_base.y << std::endl;
+            ros::Duration(5).sleep();
+            condition = false;
+
         }
         
         ros::spinOnce();
