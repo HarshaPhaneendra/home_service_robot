@@ -6,11 +6,11 @@ This Project is of "Robot Path Planning and Navigation", part of Udacity Nano De
 * Later it has to navigate to a goal pose and drop off the virtual marker. 
 
 ## Packages 
-"home_service_robot" project consists of serveral custum built along with pre-existed packages from ros community. 
+"home_service_robot" project consists of several custom built along with pre-existing packages from ros community. 
 * Localization is achieved using AMCL algorithm. Its parameters are customized to enhance the localization ability. 
-* Environmnet Mapping is done by 'pgm_map_cearter' package, which creates a '.pgm' map from pre-build build world environment.
+* Environment Mapping is done by 'pgm_map_cearter' package, which creates a '.pgm' map from pre-build world environment.
 * To achieve Robot Navigation, Dijkstra's algorithm (a variant of the Uniform Cost Search algorithm) is used. Which results in, ROS navigation stack creates a path for the robot while avoiding obstacles on its path. 
-* 'pick_objects' node - Here multple destinations will be provided to robot. 
+* 'pick_objects' node - Here multiple destinations will be provided to robot. 
 * 'add_marker' node - It subscribes to the destinations topic published by previous node and takes care of visualization of marker.
 
 
